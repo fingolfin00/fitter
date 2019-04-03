@@ -6,6 +6,7 @@ Created on Wed Apr  4 10:26:07 2018
 """
 
 import matplotlib as mpl
+import matplotlib.pyplot as plt
 import scipy.stats as stats
 import numpy as np
 import sys
@@ -58,7 +59,7 @@ class Fitter(tk.Tk):
         canvas.pack()
         
         #blank figure init
-        self.fig = mpl.pyplot.figure(facecolor=self.canvas_color)
+        self.fig = plt.figure(facecolor=self.canvas_color)
         self.fig_photo = self.draw_figure(canvas, self.fig)
         self.fig_w, self.fig_h = self.fig_photo.width(), self.fig_photo.height()
         canvas.configure(width=self.fig_w, height=self.fig_h, bg=self.canvas_color)
@@ -223,8 +224,8 @@ class Fitter(tk.Tk):
 #        print(dataa)
         y = dataa[col_n][int(self.col_name_idx.get())-1]
         
-        mpl.pyplot.close(self.fig)
-        self.fig, self.ax = mpl.pyplot.subplots(1,1)
+        plt.close(self.fig)
+        self.fig, self.ax = plt.subplots(1,1)
         
         distro = getattr(stats, distro_n)
         self.distro=distro
@@ -234,13 +235,13 @@ class Fitter(tk.Tk):
         # fit
         param = distro.fit(y)
         pdf_fitted = distro.pdf(x, *param)
-        mpl.pyplot.plot(x, pdf_fitted, color='xkcd:'+self.line_color.get())
+        plt.plot(x, pdf_fitted, color='xkcd:'+self.line_color.get())
         
         if w_flag:
             weights = np.ones_like(y)/float(len(y))
-            n, bins, patches = mpl.pyplot.hist(y, weights=weights, bins=self.bins_distro.get(), color='xkcd:'+self.hist_color.get())
+            n, bins, patches = plt.hist(y, weights=weights, bins=self.bins_distro.get(), color='xkcd:'+self.hist_color.get())
         else:
-            n, bins, patches = mpl.pyplot.hist(y, normed=True, bins=self.bins_distro.get(), color='xkcd:'+self.hist_color.get())
+            n, bins, patches = plt.hist(y, normed=True, bins=self.bins_distro.get(), color='xkcd:'+self.hist_color.get())
         
         # Keep this handle alive, or else figure will disappear
         fig_x, fig_y = 1, 1
